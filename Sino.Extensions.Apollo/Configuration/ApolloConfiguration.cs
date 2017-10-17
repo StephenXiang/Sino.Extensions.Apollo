@@ -23,5 +23,7 @@
         public int RefreshInterval { get; set; }
 
         public string MetaServerDomainName { get; set; }
+
+        public string LocalIp { get; set; }
     }
 }
