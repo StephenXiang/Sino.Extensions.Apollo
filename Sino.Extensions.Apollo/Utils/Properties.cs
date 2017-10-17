@@ -10,6 +10,8 @@ namespace Sino.Extensions.Apollo.Utils
     {
         private Dictionary<string, string> _dict = new Dictionary<string, string>();
 
+        public Properties() { }
+
         public Properties(IDictionary<string,string> dictionary)
         {
             if(dictionary != null)

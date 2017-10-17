@@ -31,7 +31,7 @@ namespace Sino.Extensions.Apollo
 
         string[] GetArrayProperty(string key, string delimiter, string[] defaultValue);
 
-        ISet<string> GetPropertyNames();
+        ICollection<string> GetPropertyNames();
 
         event ConfigChangeEvent ConfigChanged;
     }

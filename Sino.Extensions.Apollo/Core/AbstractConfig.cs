@@ -2,13 +2,12 @@
 using Sino.Extensions.Apollo.Model;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Threading;
 using Sino.Extensions.Apollo.Utils;
+using System.Linq;
 
-namespace Sino.Extensions.Apollo.Internals
+namespace Sino.Extensions.Apollo.Core
 {
     public abstract class AbstractConfig : IConfig
     {
@@ -135,7 +134,7 @@ namespace Sino.Extensions.Apollo.Internals
             }
         }
 
-        public abstract ISet<string> GetPropertyNames();
+        public abstract ICollection<string> GetPropertyNames();
 
         protected void FireConfigChange(ConfigChangeEventArgs changeEvent)
         {
@@ -170,7 +169,47 @@ namespace Sino.Extensions.Apollo.Internals
 
         protected ICollection<ConfigChange> CalcPropertyChanges(string namespaceName, Properties previous, Properties current)
         {
+            if(previous == null)
+            {
+                previous = new Properties();
+            }
 
+            if(current == null)
+            {
+                current = new Properties();
+            }
+
+            var previousKeys = previous.GetPropertyNames();
+            var currentKeys = current.GetPropertyNames();
+
+            var commonKeys = previousKeys.Intersect(currentKeys);
+            var newKeys = currentKeys.Except(commonKeys);
+            var removedKeys = previousKeys.Except(commonKeys);
+
+            ICollection<ConfigChange> changes = new LinkedList<ConfigChange>();
+
+            foreach(string newKey in newKeys)
+            {
+                changes.Add(new ConfigChange(namespaceName, newKey, null, current.GetProperty(newKey), Enums.PropertyChangeType.Added));
+            }
+
+            foreach(string removedKey in removedKeys)
+            {
+                changes.Add(new ConfigChange(namespaceName, removedKey, previous.GetProperty(removedKey), null, Enums.PropertyChangeType.Deleted));
+            }
+
+            foreach(string commonKey in commonKeys)
+            {
+                string previousValue = previous.GetProperty(commonKey);
+                string currentValue = current.GetProperty(commonKey);
+                if(string.Equals(previousValue, currentValue))
+                {
+                    continue;
+                }
+                changes.Add(new ConfigChange(namespaceName, commonKey, previousValue, currentValue, Enums.PropertyChangeType.Modified));
+            }
+
+            return changes;
         }
     }
 }

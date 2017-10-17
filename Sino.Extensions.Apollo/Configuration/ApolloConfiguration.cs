@@ -15,5 +15,13 @@
         public string DataCenter { get; set; }
 
         public string Cluster { get; set; }
+
+        public int Timeout { get; set; }
+
+        public int ReadTimeout { get; set; }
+
+        public int RefreshInterval { get; set; }
+
+        public string MetaServerDomainName { get; set; }
     }
 }

@@ -19,7 +19,10 @@ namespace Sino.Extensions.Apollo.Spi
 
         public IConfig Create(string namespaceName)
         {
-            
+            var defaultConfig = new DefaultConfig(namespaceName, CreateLocalConfigRepository(namespaceName));
+            return defaultConfig;
         }
+
+
     }
 }
