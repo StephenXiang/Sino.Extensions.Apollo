@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Sino.Extensions.Apollo.Model
 {
     public class ConfigChangeEventArgs : EventArgs
     {
-        private readonly string _namespace;
         private readonly IDictionary<string, ConfigChange> _changes;
 
         public ConfigChangeEventArgs(string namespaceName, IDictionary<string, ConfigChange> changes)
         {
-            _namespace = namespaceName;
+            Namespace = namespaceName;
             _changes = changes;
         }
 
@@ -30,6 +28,6 @@ namespace Sino.Extensions.Apollo.Model
             return change;
         }
 
-
+        public string Namespace { get; private set; }
     }
 }
