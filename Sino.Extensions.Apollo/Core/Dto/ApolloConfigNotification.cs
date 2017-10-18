@@ -8,6 +8,8 @@
 
         public ApolloNotificationMessages Messages { get; set; }
 
+        public ApolloConfigNotification() { }
+
         public ApolloConfigNotification(string namespaceName, long notificationId)
         {
             NamespaceName = namespaceName;
