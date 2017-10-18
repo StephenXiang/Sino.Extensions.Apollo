@@ -24,6 +24,7 @@ namespace Sino.Extensions.Apollo.Core
             _httpUtil = httpUtil;
             _config = config;
             _configServices = new List<ServiceDTO>();
+            Initialize();
         }
 
         public void Initialize()
